@@ -9,20 +9,18 @@ import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
 import routes from "./routes"
+import { localMiddleware } from "./middlewares"
 
 const app = express();
 
-const handleHome = (req, res) => 
-    res.send("Hello from home");
-
-const handleProfile = (req, res) => 
-    res.send("You are on my profile");
-
+// view engine => 변경되면 안됨
+app.use(helmet());
+app.set('view engine', "pug");
 app.use(cookieParser());
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({extende: true})); 
-app.use(helmet());
 app.use(morgan("dev"));
+app.use(localMiddleware);
 
 // use : 경로를 쓰게되면 userRouter 전체를 쓰겠다는 의미
 // /user/edit, password 등 기능들을 쪼개서 파일로 관리할 수 있음
